@@ -10,8 +10,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 from dotenv import load_dotenv
 
-from agentllm.agents.release_manager import ReleaseManager
-from agentllm.agents.toolkit_configs import JiraConfig
+from agentllm_agents_rhdh.release_manager import ReleaseManager
+from agentllm_agents_rhdh.toolkit_configs import JiraConfig
 
 # Load .env file for tests
 load_dotenv()
