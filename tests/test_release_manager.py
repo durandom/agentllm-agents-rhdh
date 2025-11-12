@@ -87,15 +87,15 @@ class TestToolkitConfiguration:
         gdrive_config = agent.toolkit_configs[0]
         assert gdrive_config.is_required(), "GoogleDriveConfig should be required"
 
-    @patch("agentllm.tools.gdrive_toolkit.GoogleDriveTools")
+    @patch("agentllm_agents_rhdh.tools.gdrive_toolkit.GoogleDriveTools")
     def test_google_drive_config_extracted_from_url(self, mock_gdrive_tools):
         """Test that Google Drive auth code is extracted from full redirect URL."""
         agent = ReleaseManager()
 
         # Mock Google Drive toolkit creation and validation
         mock_creds = MagicMock()
-        with patch("agentllm.agents.toolkit_configs.gdrive_config.Flow") as mock_flow:
-            with patch("agentllm.agents.toolkit_configs.gdrive_config.build") as mock_build:
+        with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.Flow") as mock_flow:
+            with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.build") as mock_build:
                 # Mock OAuth flow
                 mock_flow_instance = MagicMock()
                 mock_flow_instance.credentials = mock_creds
@@ -143,7 +143,7 @@ class TestToolkitConfiguration:
                 f"{config.__class__.__name__}.is_configured() should return False for new user"
             )
 
-    @patch("agentllm.tools.gdrive_toolkit.GoogleDriveTools")
+    @patch("agentllm_agents_rhdh.tools.gdrive_toolkit.GoogleDriveTools")
     def test_toolkit_becomes_configured_after_auth(self, mock_gdrive_tools):
         """Test that toolkit reports configured after successful authorization."""
         agent = ReleaseManager()
@@ -154,8 +154,8 @@ class TestToolkitConfiguration:
 
         # Mock Google Drive OAuth flow
         mock_creds = MagicMock()
-        with patch("agentllm.agents.toolkit_configs.gdrive_config.Flow") as mock_flow:
-            with patch("agentllm.agents.toolkit_configs.gdrive_config.build") as mock_build:
+        with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.Flow") as mock_flow:
+            with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.build") as mock_build:
                 # Mock token storage to avoid JSON serialization issues with MagicMock
                 with patch.object(gdrive_config.token_storage, "upsert_gdrive_token"):
                     with patch.object(
@@ -184,7 +184,7 @@ class TestToolkitConfiguration:
         agent = ReleaseManager()
 
         # Mock OAuth URL generation
-        with patch("agentllm.agents.toolkit_configs.gdrive_config.Flow") as mock_flow:
+        with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.Flow") as mock_flow:
             mock_flow_instance = MagicMock()
             mock_flow_instance.authorization_url.return_value = ("http://oauth.url", "state")
             mock_flow.from_client_config.return_value = mock_flow_instance
@@ -206,8 +206,8 @@ class TestAgentExecution:
         agent = ReleaseManager()
 
         # Mock and configure Google Drive (required toolkit)
-        with patch("agentllm.agents.toolkit_configs.gdrive_config.Flow") as mock_flow:
-            with patch("agentllm.agents.toolkit_configs.gdrive_config.build") as mock_build:
+        with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.Flow") as mock_flow:
+            with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.build") as mock_build:
                 mock_creds = MagicMock()
                 mock_flow_instance = MagicMock()
                 mock_flow_instance.credentials = mock_creds
@@ -276,14 +276,14 @@ class TestAgentExecution:
 class TestAgentCaching:
     """Tests for agent caching and invalidation."""
 
-    @patch("agentllm.tools.gdrive_toolkit.GoogleDriveTools")
+    @patch("agentllm_agents_rhdh.tools.gdrive_toolkit.GoogleDriveTools")
     def test_agent_cache_per_user(self, mock_gdrive_tools):
         """Test that agents are cached per user."""
         manager = ReleaseManager()
 
         # Configure Google Drive for both users
-        with patch("agentllm.agents.toolkit_configs.gdrive_config.Flow") as mock_flow:
-            with patch("agentllm.agents.toolkit_configs.gdrive_config.build") as mock_build:
+        with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.Flow") as mock_flow:
+            with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.build") as mock_build:
                 mock_creds = MagicMock()
                 mock_flow_instance = MagicMock()
                 mock_flow_instance.credentials = mock_creds
@@ -311,7 +311,7 @@ class TestAgentCaching:
         agent1_again = manager._get_or_create_agent("user1")
         assert agent1_again is agent1, "Should return cached agent"
 
-    @patch("agentllm.tools.gdrive_toolkit.GoogleDriveTools")
+    @patch("agentllm_agents_rhdh.tools.gdrive_toolkit.GoogleDriveTools")
     def test_agent_invalidated_after_new_toolkit_config(self, mock_gdrive_tools):
         """Test that agent is invalidated when new toolkit is configured."""
         agent = ReleaseManager()
@@ -322,8 +322,8 @@ class TestAgentCaching:
 
         # Mock Google Drive OAuth to configure a toolkit
         mock_creds = MagicMock()
-        with patch("agentllm.agents.toolkit_configs.gdrive_config.Flow") as mock_flow:
-            with patch("agentllm.agents.toolkit_configs.gdrive_config.build") as mock_build:
+        with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.Flow") as mock_flow:
+            with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.build") as mock_build:
                 mock_flow_instance = MagicMock()
                 mock_flow_instance.credentials = mock_creds
                 mock_flow.from_client_config.return_value = mock_flow_instance
@@ -349,13 +349,13 @@ class TestAgentCaching:
 class TestConfigurationValidation:
     """Tests for configuration validation and error handling."""
 
-    @patch("agentllm.tools.gdrive_toolkit.GoogleDriveTools")
+    @patch("agentllm_agents_rhdh.tools.gdrive_toolkit.GoogleDriveTools")
     def test_invalid_auth_code_returns_error(self, mock_gdrive_tools):
         """Test that invalid authorization code returns user-friendly error."""
         agent = ReleaseManager()
 
         # Mock failed OAuth exchange
-        with patch("agentllm.agents.toolkit_configs.gdrive_config.Flow") as mock_flow:
+        with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.Flow") as mock_flow:
             mock_flow_instance = MagicMock()
             mock_flow_instance.fetch_token.side_effect = Exception("Invalid code")
             mock_flow.from_client_config.return_value = mock_flow_instance
@@ -371,15 +371,15 @@ class TestConfigurationValidation:
 class TestToolkitInstructions:
     """Tests for toolkit-specific agent instructions."""
 
-    @patch("agentllm.tools.gdrive_toolkit.GoogleDriveTools")
+    @patch("agentllm_agents_rhdh.tools.gdrive_toolkit.GoogleDriveTools")
     def test_agent_instructions_include_toolkit_info(self, mock_gdrive_tools):
         """Test that agent receives toolkit-specific instructions when configured."""
         agent = ReleaseManager()
 
         # Mock Google Drive OAuth
         mock_creds = MagicMock()
-        with patch("agentllm.agents.toolkit_configs.gdrive_config.Flow") as mock_flow:
-            with patch("agentllm.agents.toolkit_configs.gdrive_config.build") as mock_build:
+        with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.Flow") as mock_flow:
+            with patch("agentllm_agents_rhdh.toolkit_configs.gdrive_config.build") as mock_build:
                 mock_flow_instance = MagicMock()
                 mock_flow_instance.credentials = mock_creds
                 mock_flow.from_client_config.return_value = mock_flow_instance
@@ -439,7 +439,7 @@ class TestRequiredVsOptionalConfigs:
         gdrive_config = agent.toolkit_configs[0]
         assert gdrive_config.is_required(), "GoogleDriveConfig should be required"
 
-    @patch("agentllm.tools.jira_toolkit.JiraTools")
+    @patch("agentllm_agents_rhdh.tools.jira_toolkit.JiraTools")
     def test_required_config_blocks_agent_until_configured(self, mock_jira_tools):
         """Test that required configs prevent agent usage until configured."""
         agent = ReleaseManager()
