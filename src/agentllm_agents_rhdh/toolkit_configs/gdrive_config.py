@@ -10,7 +10,7 @@ from google_auth_oauthlib.flow import Flow
 from googleapiclient.discovery import build
 from loguru import logger
 
-from agentllm.tools.gdrive_toolkit import GoogleDriveTools
+from agentllm_agents_rhdh.tools.gdrive_toolkit import GoogleDriveTools
 
 from .base import BaseToolkitConfig
 
