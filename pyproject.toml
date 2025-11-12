@@ -43,6 +43,9 @@ release-manager = "agentllm_agents_rhdh.release_manager:ReleaseManagerFactory"
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.uv.sources]
+agentllm-core = { workspace = true }
+
 [tool.hatch.build.targets.wheel]
 packages = ["src/agentllm_agents_rhdh"]
 
