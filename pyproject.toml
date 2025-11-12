@@ -25,6 +25,7 @@ dependencies = [
     "google-auth-oauthlib>=1.0.0",
     "google-api-python-client>=2.0.0",
     "jira>=3.0.0",
+    "html-to-markdown>=0.1.0",
 ]
 
 [project.optional-dependencies]
