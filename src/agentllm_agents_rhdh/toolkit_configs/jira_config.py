@@ -4,9 +4,8 @@ import re
 
 from loguru import logger
 
+from agentllm.agents.toolkit_configs.base import BaseToolkitConfig
 from agentllm_agents_rhdh.tools.jira_toolkit import JiraTools
-
-from .base import BaseToolkitConfig
 
 
 class JiraConfig(BaseToolkitConfig):
