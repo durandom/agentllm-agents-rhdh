@@ -6,13 +6,13 @@ from agno.db.sqlite import SqliteDb
 from loguru import logger
 
 from agentllm.agents.base_agent import BaseAgentWrapper
-from agentllm.agents.toolkit_configs import GoogleDriveConfig
 from agentllm.agents.toolkit_configs.base import BaseToolkitConfig
-from agentllm.agents.toolkit_configs.jira_config import JiraConfig
-from agentllm.agents.toolkit_configs.system_prompt_extension_config import (
+from agentllm.db import TokenStorage
+from agentllm_agents_rhdh.toolkit_configs import GoogleDriveConfig
+from agentllm_agents_rhdh.toolkit_configs.jira_config import JiraConfig
+from agentllm_agents_rhdh.toolkit_configs.system_prompt_extension_config import (
     SystemPromptExtensionConfig,
 )
-from agentllm.db import TokenStorage
 
 # Map GEMINI_API_KEY to GOOGLE_API_KEY if not set
 if "GOOGLE_API_KEY" not in os.environ and "GEMINI_API_KEY" in os.environ:
